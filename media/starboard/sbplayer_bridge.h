@@ -80,7 +80,7 @@ class SbPlayerBridge {
       GetDecodeTargetGraphicsContextProviderFunc;
 
 #if SB_HAS(PLAYER_WITH_URL)
-  typedef base::Callback<void(const char*, const unsigned char*, unsigned)>
+  typedef base::RepeatingCallback<void(const char*, const unsigned char*, unsigned)>
       OnEncryptedMediaInitDataEncounteredCB;
   // Create an SbPlayerBridge with url-based player.
   SbPlayerBridge(SbPlayerInterface* interface,
@@ -92,7 +92,9 @@ class SbPlayerBridge {
                  SbPlayerOutputMode default_output_mode,
                  const OnEncryptedMediaInitDataEncounteredCB&
                      encrypted_media_init_data_encountered_cb,
-                 DecodeTargetProvider* const decode_target_provider,
+#if COBALT_MEDIA_ENABLE_DECODE_TARGET_PROVIDER
+    DecodeTargetProvider* const decode_target_provider,
+#endif  // COBALT_MEDIA_ENABLE_DECODE_TARGET_PROVIDER
                  std::string pipeline_identifier);
 #endif  // SB_HAS(PLAYER_WITH_URL)
   // Create a SbPlayerBridge with normal player
