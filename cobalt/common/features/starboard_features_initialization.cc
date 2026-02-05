@@ -166,7 +166,7 @@ void InitializeStarboardFeatures() {
           SbSystemGetExtension(kStarboardExtensionFeaturesName));
   if (!extension_api) {
     LOG(ERROR) << "Unable to retrieve StarboardExtension "
-                  "kStarboardExtensionFeaturesName."
+                  << "\"" << kStarboardExtensionFeaturesName << "\". "
                << "No features or parameters have been pushed to Starboard.";
     return;
   }
