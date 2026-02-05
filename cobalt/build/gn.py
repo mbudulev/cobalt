@@ -78,6 +78,10 @@ _COBALT_TVOS_PLATFORMS = [
     'tvos-arm64-simulator',
 ]
 
+_COBALT_CUSTOM_PLATFORMS = [
+    'smartlabs-ubuntu',
+]
+
 
 # pylint: disable=too-many-positional-arguments
 def write_build_args(build_args_path, platform_args_path, build_type, use_rbe,
@@ -141,7 +145,7 @@ def parse_args():
       '--platform',
       default='linux-x64x11',
       choices=_CHROMIUM_PLATFORMS + _COBALT_STARBOARD_PLATFORMS +
-      _COBALT_ANDROID_PLATFORMS + _COBALT_TVOS_PLATFORMS,
+      _COBALT_ANDROID_PLATFORMS + _COBALT_TVOS_PLATFORMS + _COBALT_CUSTOM_PLATFORMS,
       help='The platform to build.')
   parser.add_argument(
       '-c',

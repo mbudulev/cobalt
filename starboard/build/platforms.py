@@ -42,6 +42,7 @@ PLATFORMS = {
     'evergreen-arm64': 'starboard/evergreen/arm64',
     'tvos-arm64-device': 'starboard/tvos/arm64/device',
     'tvos-arm64-simulator': 'starboard/tvos/arm64/simulator',
+    'smartlabs-ubuntu': 'starboard/smartlabs/ubuntu',
 }
 PLATFORMS.update(INTERNAL_PLATFORMS)
 
