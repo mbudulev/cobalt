@@ -1,2 +1,5 @@
 import("//cobalt/build/configs/android_common.gn")
 import("//cobalt/build/configs/chromium_android-arm/args.gn")
+
+cc_wrapper = "CCACHE_SLOPPINESS=time_macros,include_file_mtime CCACHE_BASEDIR=/smartlabs/projects/cobalt/src ccache"
+v8_symbol_level = 0
