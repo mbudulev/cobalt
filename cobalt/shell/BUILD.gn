@@ -122,6 +122,10 @@ group("cobalt_shell_lib_deps") {
     public_deps += [ "//ui/linux:linux_ui_factory" ]
   }
 
+  if (is_starboard) {
+    public_deps += [ "//starboard:starboard_headers_only" ]
+  }
+
   if (is_ios) {
     public_deps += [
       "//services/tracing/public/cpp",

@@ -85,6 +85,11 @@ using ::starboard::StarboardBridge;
 #include "cobalt/android/oom_intervention/oom_intervention_tab_helper.h"
 #endif
 
+#if BUILDFLAG(IS_STARBOARD)
+#include "starboard/extension/js_injection.h"
+#include "starboard/system.h"
+#endif  // BUILDFLAG(IS_STARBOARD)
+
 namespace content {
 
 namespace {
@@ -435,6 +440,31 @@ void Shell::RegisterInjectedJavaScript() {
                    << ", error message: " << result.error_message.value();
     }
   }
+
+#if BUILDFLAG(IS_STARBOARD)
+  // Query the platform for an optional custom JS to inject (e.g. abc.js on
+  // smartlabs). The extension is optional; non-implementing platforms return
+  // NULL from SbSystemGetExtension and the block is silently skipped.
+  const CobaltExtensionJsInjectionApi* js_injection_ext =
+      static_cast<const CobaltExtensionJsInjectionApi*>(
+          SbSystemGetExtension(kCobaltExtensionJsInjectionName));
+  if (js_injection_ext && js_injection_ext->GetInjectedJavaScript) {
+    const char* platform_js = js_injection_ext->GetInjectedJavaScript();
+    if (platform_js) {
+      LOG(INFO) << "Registering platform JS injection via "
+                << kCobaltExtensionJsInjectionName;
+      const std::u16string script(base::UTF8ToUTF16(platform_js));
+      const std::vector<std::string> allowed_origins({"*"});
+      auto result =
+          js_communication_host_->AddDocumentStartJavaScript(script,
+                                                             allowed_origins);
+      if (result.error_message.has_value()) {
+        LOG(WARNING) << "Failed to register platform JS injection, error: "
+                     << result.error_message.value();
+      }
+    }
+  }
+#endif  // BUILDFLAG(IS_STARBOARD)
 }
 
 void Shell::LoadSplashScreenWebContents() {
